@@ -13,6 +13,7 @@ module Restforce
     autoload :Gzip,           'restforce/middleware/gzip'
 
     def initialize(app, client, options)
+      super(app)
       @app, @client, @options = app, client, options
     end
 
