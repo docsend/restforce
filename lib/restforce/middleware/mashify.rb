@@ -1,18 +1,17 @@
 module Restforce
   # Middleware the converts sobject records from JSON into Restforce::SObject objects
   # and collections of records into Restforce::Collection objects.
-  class Middleware::Mashify < Restforce::Middleware
+  class Middleware::Mashify < Faraday::Response::Mashify
 
-    def call(env)
-      @env = env
-      response = @app.call(env)
-      env[:body] = Restforce::Mash.build(body, client)
-      response
+    def parse(body)
+      Restforce::Mash.build(body, @client)
     end
 
-    def body
-      @env[:body]
+    def initialize(app = nil, client = nil, options = {})
+      super(app)
+      @client = client
+      @options = options
     end
-  
+
   end
 end
